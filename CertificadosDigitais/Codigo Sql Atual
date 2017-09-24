@@ -1,0 +1,60 @@
+USE mpiinformatica19;
+
+CREATE TABLE data(
+	data DATETIME);
+
+DROP TABLE IF EXISTS certificado;
+CREATE TABLE IF NOT EXISTS certificado (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  descricao varchar(200) NOT NULL,
+  validade int(11) NOT NULL,
+  custo decimal(10,2) NOT NULL,
+  valor_venda decimal(10,2) NOT NULL,
+  valor_comissao_contador decimal(10,2) NOT NULL,
+  valor_a_vista decimal(10,2) NOT NULL,
+  PRIMARY KEY (id));
+
+
+CREATE TABLE IF NOT EXISTS empresa (
+	id int(11) NOT NULL AUTO_INCREMENT,
+	razaoSocial varchar(200) NOT NULL,
+	nomeFantasia varchar(200) NOT NULL,
+	cnpj varchar(100) NOT NULL,
+	telefone varchar(200) NOT NULL,
+	email varchar(200) DEFAULT NULL,
+	site varchar(200) DEFAULT NULL,
+	respLegal_1_ID int(11) DEFAULT NULL,
+	respLegal_2_ID int(11) DEFAULT NULL,
+PRIMARY KEY (id))
+
+
+DROP TABLE IF EXISTS midia;
+CREATE TABLE IF NOT EXISTS midia (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  descricao varchar(200) NOT NULL,
+  quantidade int(11) DEFAULT NULL,
+  custo decimal(10,2) NOT NULL,
+  PRIMARY KEY (id));
+
+
+DROP TABLE IF EXISTS parceria;
+CREATE TABLE IF NOT EXISTS parceria (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  nome varchar(200) NOT NULL,
+  empresa varchar(200) DEFAULT NULL,
+  telefone varchar(50) DEFAULT NULL,
+  codigoParceiro varchar(20) DEFAULT NULL,
+  email varchar(200) DEFAULT NULL,
+  PRIMARY KEY (id));
+
+
+DROP TABLE IF EXISTS pessoa;
+CREATE TABLE IF NOT EXISTS pessoa (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  nome varchar(200) NOT NULL,
+  cpf varchar(15) DEFAULT NULL,
+  telefone varchar(100) DEFAULT NULL,
+  email varchar(200) DEFAULT NULL,
+  PRIMARY KEY (id));
+
+
