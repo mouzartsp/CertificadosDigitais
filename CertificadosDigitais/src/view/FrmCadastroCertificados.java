@@ -361,10 +361,18 @@ public class FrmCadastroCertificados extends JFrame {
 						txt_preco_comissao_contador.setBackground(Color.white);
 					}
 					double valor_comissao_contador = Double.parseDouble(txt_preco_comissao_contador.getText());
+					
+					int idMidia = -1;
+					if (comboBoxMidia.getSelectedIndex() == 0) {
+						System.out.println("");
+					} else {
+
+						idMidia = ((Midia) comboBoxMidia.getSelectedItem()).getId();
+					}
 
 					try {
 						MySql.getInsereCertificado(descricao, validade, custo, valor_comissao_contador, valor_venda,
-								valor_venda_vista);
+								valor_venda_vista, idMidia);
 						JOptionPane.showMessageDialog(null, "Cadastro Gravado");
 						dispose();
 						FrmCadastroCertificados f = new FrmCadastroCertificados();
@@ -474,7 +482,7 @@ public class FrmCadastroCertificados extends JFrame {
 
 		tabela_certificados = new JTable();
 		tabela_certificados.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID",
-				"DESCRI\u00C7\u00C3O", "TEMPO", "CUSTO", "VENDA PRAZO", "VENDA VISTA", "COMISSAO" }));
+				"DESCRI\u00C7\u00C3O", "TEMPO", "CUSTO", "VENDA PRAZO", "VENDA VISTA", "COMISSAO", "ID-M", "MIDIA", "QUANT-M" }));
 
 		DefaultTableModel minhaTabela = (DefaultTableModel) tabela_certificados.getModel();
 
@@ -510,13 +518,16 @@ public class FrmCadastroCertificados extends JFrame {
 			e1.printStackTrace();
 		}
 
-		tabela_certificados.getColumnModel().getColumn(0).setMaxWidth(40);
+		tabela_certificados.getColumnModel().getColumn(0).setMaxWidth(30);
 		tabela_certificados.getColumnModel().getColumn(1).setMaxWidth(250);
 		tabela_certificados.getColumnModel().getColumn(2).setMaxWidth(80);
 		tabela_certificados.getColumnModel().getColumn(3).setMaxWidth(70);
 		tabela_certificados.getColumnModel().getColumn(4).setMaxWidth(95);
 		tabela_certificados.getColumnModel().getColumn(5).setMaxWidth(95);
 		tabela_certificados.getColumnModel().getColumn(6).setMaxWidth(78);
+		tabela_certificados.getColumnModel().getColumn(7).setMaxWidth(50);
+		tabela_certificados.getColumnModel().getColumn(8).setMaxWidth(200);
+		tabela_certificados.getColumnModel().getColumn(9).setMaxWidth(60);
 
 		///////
 		scrollPane.setViewportView(tabela_certificados);

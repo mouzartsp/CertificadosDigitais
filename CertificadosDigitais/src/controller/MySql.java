@@ -12,11 +12,11 @@ import model.Midia;
 
 public class MySql {
 	
-	public static void getInsereCertificado(String descricao, int validade, double custo, double valor_comissao_contador, double valor_venda, double valor_a_vista) throws SQLException {
+	public static void getInsereCertificado(String descricao, int validade, double custo, double valor_comissao_contador, double valor_venda, double valor_a_vista, int idMidia) throws SQLException {
 
 		Connection connection = Database.getConnection();
 		Statement statement = connection.createStatement();
-		boolean resultado = statement.execute("insert into certificado (descricao,validade,custo, valor_venda, valor_comissao_contador, valor_a_vista) values ('"+descricao+"','"+validade+"','"+custo+"','"+valor_venda+"','"+valor_comissao_contador+"','"+valor_a_vista+"')");
+		boolean resultado = statement.execute("insert into certificado (descricao,validade,custo, valor_venda, valor_comissao_contador, valor_a_vista, idMidia) values ('"+descricao+"','"+validade+"','"+custo+"','"+valor_venda+"','"+valor_comissao_contador+"','"+valor_a_vista+"','"+idMidia+"')");
 		System.out.println("Teve algum erro? "+resultado);
 		statement.close();
 		connection.close();
