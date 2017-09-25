@@ -51,7 +51,6 @@ public class FrmCadastroCertificados extends JFrame {
 	static Certificado certificadoEditar;
 	private JTextField txt_margem;
 	private JTextField txt_quantidade_midia;
-	private JTextField txt_valor_venda_midia;
 
 	public FrmCadastroCertificados() {
 		
@@ -75,26 +74,14 @@ public class FrmCadastroCertificados extends JFrame {
 		});
 
 		txt_margem = new JTextField();
+		txt_margem.setForeground(Color.RED);
 
 		txt_margem.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 
-				// String caracteres="0987654321";
-				//
-				// if(! caracteres.contains(arg0.getKeyChar()+"")){
-				//
-				// arg0.consume();
-				//
-				// }
 
-				// int caracteres_maximo = 3;
-				// if (txt_margem.getText().length()>caracteres_maximo ) {
-				// arg0.consume();
-				// JOptionPane.showMessageDialog(null, "Maximo setado para 3 DIGITOS");
-				//
-				// }
-				//
+				
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER || arg0.getKeyCode() == KeyEvent.VK_TAB) {
 					String testa = txt_margem.getText();
 					String testa2 = txt_Custo.getText();
@@ -113,14 +100,44 @@ public class FrmCadastroCertificados extends JFrame {
 				}
 
 			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+				String caracteres = "0987654321";
+
+				if (!caracteres.contains(e.getKeyChar() + "")) {
+
+					e.consume();
+
+				}
+
+				int caracteres_maximo = 3;
+				if (txt_margem.getText().length() > caracteres_maximo) {
+					e.consume();
+					JOptionPane.showMessageDialog(null, "Maximo setado para 3 digitos \n"
+							+ "ERRO NO CALCULO \n"
+							+ "DIGITE NO MAX 3 DIGITOS E TECLE ENTER PARA CALCULO CORRETO DA %");
+
+				}
+				
+				
+				
+			}
 		});
 		JRadioButton rb_12 = new JRadioButton("12");
 		JRadioButton rb_24 = new JRadioButton("24");
 		JRadioButton rb_36 = new JRadioButton("36");
 		JLabel label_mensagem = new JLabel(".");
-		label_mensagem.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		label_mensagem.setFont(new Font("Tahoma", Font.BOLD, 14));
 		JButton btnGravar = new JButton("Gravar");
+		btnGravar.setFont(new Font("Tahoma", Font.BOLD, 13));
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				limparCampos();
+			}
+		});
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -165,6 +182,11 @@ public class FrmCadastroCertificados extends JFrame {
 						} else if (valorRB == 36) {
 							rb_36.setSelected(true);
 						}
+						
+						int idDaMidia = c.getIdMidia();
+						Midia m = new Midia();
+						m.setId(idDaMidia);
+						comboBoxMidia.setSelectedItem(m.getId());
 
 						certificadoEditar = c;
 
@@ -236,7 +258,7 @@ public class FrmCadastroCertificados extends JFrame {
 		txt_preco_vista = new JTextField();
 		setTitle("Cadastro Certificados");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1085, 572);
+		setBounds(100, 100, 1091, 572);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -247,12 +269,12 @@ public class FrmCadastroCertificados extends JFrame {
 		contentPane.add(label_Descricao);
 
 		JLabel label_Validade = new JLabel("Validade:");
-		label_Validade.setBounds(422, 51, 71, 14);
+		label_Validade.setBounds(445, 55, 71, 14);
 		contentPane.add(label_Validade);
 
 		JLabel label_Custo = new JLabel("Custo R$");
 		label_Custo.setToolTipText("CUSTO QUE VOCE TEM COM A CERTIFICADORA QUE ESTA NA TABELA DO SEU CONTRATO");
-		label_Custo.setBounds(717, 51, 72, 14);
+		label_Custo.setBounds(742, 51, 72, 14);
 		contentPane.add(label_Custo);
 
 		txt_Descricao = new JTextField();
@@ -283,23 +305,23 @@ public class FrmCadastroCertificados extends JFrame {
 			}
 		});
 		txt_Custo.setColumns(10);
-		txt_Custo.setBounds(777, 48, 51, 20);
+		txt_Custo.setBounds(824, 48, 51, 20);
 		contentPane.add(txt_Custo);
 
 		buttonGroup.add(rb_12);
-		rb_12.setBounds(499, 47, 40, 23);
+		rb_12.setBounds(522, 51, 40, 23);
 		contentPane.add(rb_12);
 
 		buttonGroup.add(rb_24);
-		rb_24.setBounds(541, 47, 51, 23);
+		rb_24.setBounds(564, 51, 51, 23);
 		contentPane.add(rb_24);
 
 		buttonGroup.add(rb_36);
-		rb_36.setBounds(594, 47, 51, 23);
+		rb_36.setBounds(617, 51, 51, 23);
 		contentPane.add(rb_36);
 
 		JLabel label_meses = new JLabel("Meses");
-		label_meses.setBounds(651, 51, 67, 14);
+		label_meses.setBounds(674, 55, 67, 14);
 		contentPane.add(label_meses);
 
 		btnGravar.addActionListener(new ActionListener() {
@@ -361,15 +383,25 @@ public class FrmCadastroCertificados extends JFrame {
 						txt_preco_comissao_contador.setBackground(Color.white);
 					}
 					double valor_comissao_contador = Double.parseDouble(txt_preco_comissao_contador.getText());
+					
+					int idMidia = -1;
+					if (comboBoxMidia.getSelectedIndex() == 0) {
+						System.out.println("");
+					} else {
+
+						idMidia = ((Midia) comboBoxMidia.getSelectedItem()).getId();
+					}
 
 					try {
 						MySql.getInsereCertificado(descricao, validade, custo, valor_comissao_contador, valor_venda,
-								valor_venda_vista);
+								valor_venda_vista, idMidia);
 						JOptionPane.showMessageDialog(null, "Cadastro Gravado");
-						dispose();
-						FrmCadastroCertificados f = new FrmCadastroCertificados();
-						f.setLocationRelativeTo(null);
-						f.setVisible(true);
+						certificadoEditar = null;
+						limparCampos();
+//						dispose();
+//						FrmCadastroCertificados f = new FrmCadastroCertificados();
+//						f.setLocationRelativeTo(null);
+//						f.setVisible(true);
 
 					} catch (SQLException e) {
 						JOptionPane.showMessageDialog(null,
@@ -458,14 +490,14 @@ public class FrmCadastroCertificados extends JFrame {
 		txtCampoCusto.setText("* Campo custo use somente valores ate 999.99 Reais");
 		txtCampoCusto.setEditable(false);
 		txtCampoCusto.setColumns(10);
-		txtCampoCusto.setBounds(10, 182, 339, 20);
+		txtCampoCusto.setBounds(10, 182, 293, 20);
 		contentPane.add(txtCampoCusto);
 
 		txtCampoCusto_1 = new JTextField();
 		txtCampoCusto_1.setText("* Campo custo operador decimal (ponto) \".\"");
 		txtCampoCusto_1.setEditable(false);
 		txtCampoCusto_1.setColumns(10);
-		txtCampoCusto_1.setBounds(379, 182, 339, 20);
+		txtCampoCusto_1.setBounds(313, 182, 225, 20);
 		contentPane.add(txtCampoCusto_1);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -474,7 +506,7 @@ public class FrmCadastroCertificados extends JFrame {
 
 		tabela_certificados = new JTable();
 		tabela_certificados.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID",
-				"DESCRI\u00C7\u00C3O", "TEMPO", "CUSTO", "VENDA PRAZO", "VENDA VISTA", "COMISSAO" }));
+				"DESCRI\u00C7\u00C3O", "TEMPO", "CUSTO", "VENDA PRAZO", "VENDA VISTA", "COMISSAO", "ID MIDIA"}));
 
 		DefaultTableModel minhaTabela = (DefaultTableModel) tabela_certificados.getModel();
 
@@ -495,10 +527,21 @@ public class FrmCadastroCertificados extends JFrame {
 				c.setPreco_prazo(resultSet.getDouble("valor_venda"));
 				c.setComissao(resultSet.getDouble("valor_comissao_contador"));
 				c.setPreco_vista(resultSet.getDouble("valor_a_vista"));
+				c.setIdMidia(resultSet.getInt("idMidia"));
+				
+				if (c.getIdMidia() == -1) {
+					
+					Object[] linha1 = { c.getId(), c.getDescricao(), c.getValidade() + " Meses", "R$ " + c.getCusto(),
+							"R$ " + c.getPreco_prazo(), "R$ " + c.getPreco_vista(), "R$ " + c.getComissao(),"SEM MIDIA", };
+					minhaTabela.addRow(linha1);
+				}else {
+					
+					Object[] linha1 = { c.getId(), c.getDescricao(), c.getValidade() + " Meses", "R$ " + c.getCusto(),
+							"R$ " + c.getPreco_prazo(), "R$ " + c.getPreco_vista(), "R$ " + c.getComissao(),c.getIdMidia(), };
+					minhaTabela.addRow(linha1);
+				}
+				
 
-				Object[] linha1 = { c.getId(), c.getDescricao(), c.getValidade() + " Meses", "R$ " + c.getCusto(),
-						"R$ " + c.getPreco_prazo(), "R$ " + c.getPreco_vista(), "R$ " + c.getComissao(), };
-				minhaTabela.addRow(linha1);
 
 			}
 			resultSet.close();
@@ -510,25 +553,26 @@ public class FrmCadastroCertificados extends JFrame {
 			e1.printStackTrace();
 		}
 
-		tabela_certificados.getColumnModel().getColumn(0).setMaxWidth(40);
-		tabela_certificados.getColumnModel().getColumn(1).setMaxWidth(250);
-		tabela_certificados.getColumnModel().getColumn(2).setMaxWidth(80);
-		tabela_certificados.getColumnModel().getColumn(3).setMaxWidth(70);
-		tabela_certificados.getColumnModel().getColumn(4).setMaxWidth(95);
-		tabela_certificados.getColumnModel().getColumn(5).setMaxWidth(95);
-		tabela_certificados.getColumnModel().getColumn(6).setMaxWidth(78);
+		tabela_certificados.getColumnModel().getColumn(0).setMaxWidth(30);
+		tabela_certificados.getColumnModel().getColumn(1).setMaxWidth(510);
+		tabela_certificados.getColumnModel().getColumn(2).setMaxWidth(90);
+		tabela_certificados.getColumnModel().getColumn(3).setMaxWidth(90);
+		tabela_certificados.getColumnModel().getColumn(4).setMaxWidth(90);
+		tabela_certificados.getColumnModel().getColumn(5).setMaxWidth(90);
+		tabela_certificados.getColumnModel().getColumn(6).setMaxWidth(90);
+		tabela_certificados.getColumnModel().getColumn(7).setMaxWidth(90);
 
 		///////
 		scrollPane.setViewportView(tabela_certificados);
 
 		JLabel lblPreoDeVenda = new JLabel("Pre\u00E7o parcelado R$");
 		lblPreoDeVenda.setToolTipText("CUSTO QUE VOCE TEM COM A CERTIFICADORA QUE ESTA NA TABELA DO SEU CONTRATO");
-		lblPreoDeVenda.setBounds(422, 84, 127, 14);
+		lblPreoDeVenda.setBounds(695, 84, 127, 14);
 		contentPane.add(lblPreoDeVenda);
 
 		JLabel lblComissoContadorR = new JLabel("Comiss\u00E3o R$");
 		lblComissoContadorR.setToolTipText("CUSTO QUE VOCE TEM COM A CERTIFICADORA QUE ESTA NA TABELA DO SEU CONTRATO");
-		lblComissoContadorR.setBounds(922, 84, 96, 14);
+		lblComissoContadorR.setBounds(922, 128, 96, 14);
 		contentPane.add(lblComissoContadorR);
 
 		txt_preco_venda = new JTextField();
@@ -555,7 +599,7 @@ public class FrmCadastroCertificados extends JFrame {
 			}
 		});
 		txt_preco_venda.setColumns(10);
-		txt_preco_venda.setBounds(534, 81, 51, 20);
+		txt_preco_venda.setBounds(824, 81, 51, 20);
 		contentPane.add(txt_preco_venda);
 
 		txt_preco_comissao_contador = new JTextField();
@@ -581,12 +625,12 @@ public class FrmCadastroCertificados extends JFrame {
 			}
 		});
 		txt_preco_comissao_contador.setColumns(10);
-		txt_preco_comissao_contador.setBounds(1008, 81, 51, 20);
+		txt_preco_comissao_contador.setBounds(1008, 125, 51, 20);
 		contentPane.add(txt_preco_comissao_contador);
 
 		JLabel lblPreoVista = new JLabel("Pre\u00E7o \u00E0 vista R$");
 		lblPreoVista.setToolTipText("CUSTO QUE VOCE TEM COM A CERTIFICADORA QUE ESTA NA TABELA DO SEU CONTRATO");
-		lblPreoVista.setBounds(661, 84, 111, 14);
+		lblPreoVista.setBounds(892, 87, 111, 14);
 		contentPane.add(lblPreoVista);
 
 		txt_preco_vista.addKeyListener(new KeyAdapter() {
@@ -611,7 +655,7 @@ public class FrmCadastroCertificados extends JFrame {
 			}
 		});
 		txt_preco_vista.setColumns(10);
-		txt_preco_vista.setBounds(758, 79, 51, 20);
+		txt_preco_vista.setBounds(1008, 84, 51, 20);
 		contentPane.add(txt_preco_vista);
 
 		JButton btnNewButton = new JButton("Imprimir Tabela");
@@ -636,7 +680,7 @@ public class FrmCadastroCertificados extends JFrame {
 
 			}
 		});
-		btnNewButton.setBounds(557, 499, 161, 23);
+		btnNewButton.setBounds(898, 499, 161, 23);
 		contentPane.add(btnNewButton);
 
 		btnEditar.setBounds(10, 499, 89, 23);
@@ -648,21 +692,22 @@ public class FrmCadastroCertificados extends JFrame {
 		btnExcluir.setBounds(217, 499, 89, 23);
 		contentPane.add(btnExcluir);
 
-		JLabel lblCadastroDeCertificados = new JLabel("Cadastro de certificados d\u00EDsponiveis para venda");
+		JLabel lblCadastroDeCertificados = new JLabel("Cadastro de certificados d\u00EDsponiveis para venda / Tabela de pre\u00E7o");
+		lblCadastroDeCertificados.setForeground(Color.BLUE);
 		lblCadastroDeCertificados.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCadastroDeCertificados.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
-		lblCadastroDeCertificados.setBounds(10, 11, 708, 20);
+		lblCadastroDeCertificados.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 18));
+		lblCadastroDeCertificados.setBounds(10, 11, 1049, 20);
 		contentPane.add(lblCadastroDeCertificados);
 
-		label_mensagem.setBounds(422, 118, 647, 14);
+		label_mensagem.setBounds(10, 143, 708, 28);
 		contentPane.add(label_mensagem);
 
-		txt_margem.setBounds(912, 48, 40, 20);
+		txt_margem.setBounds(1008, 45, 51, 20);
 		contentPane.add(txt_margem);
 		txt_margem.setColumns(10);
 
 		JLabel lblMargem = new JLabel("Margem");
-		lblMargem.setBounds(854, 51, 72, 14);
+		lblMargem.setBounds(922, 51, 72, 14);
 		contentPane.add(lblMargem);
 
 		JLabel lblMidia = new JLabel("Midia:");
@@ -676,20 +721,10 @@ public class FrmCadastroCertificados extends JFrame {
 		lblQtdDisponivelDa.setBounds(10, 118, 225, 14);
 		contentPane.add(lblQtdDisponivelDa);
 
-		JLabel lblVl = new JLabel("VL Venda");
-		lblVl.setBounds(10, 143, 89, 14);
-		contentPane.add(lblVl);
-
 		txt_quantidade_midia.setEditable(false);
-		txt_quantidade_midia.setBounds(245, 115, 86, 20);
+		txt_quantidade_midia.setBounds(245, 112, 167, 20);
 		contentPane.add(txt_quantidade_midia);
 		txt_quantidade_midia.setColumns(10);
-
-		txt_valor_venda_midia = new JTextField();
-		txt_valor_venda_midia.setEditable(false);
-		txt_valor_venda_midia.setBounds(94, 140, 86, 20);
-		contentPane.add(txt_valor_venda_midia);
-		txt_valor_venda_midia.setColumns(10);
 		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { rb_12, rb_24, rb_36,
 				label_meses, txt_Custo, btnGravar, label_Validade, label_Custo, txt_Descricao, label_Descricao }));
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txt_Descricao, rb_12, rb_24, rb_36,

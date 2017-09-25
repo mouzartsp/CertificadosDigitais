@@ -12,11 +12,11 @@ import model.Midia;
 
 public class MySql {
 	
-	public static void getInsereCertificado(String descricao, int validade, double custo, double valor_comissao_contador, double valor_venda, double valor_a_vista) throws SQLException {
+	public static void getInsereCertificado(String descricao, int validade, double custo, double valor_comissao_contador, double valor_venda, double valor_a_vista, int idMidia) throws SQLException {
 
 		Connection connection = Database.getConnection();
 		Statement statement = connection.createStatement();
-		boolean resultado = statement.execute("insert into certificado (descricao,validade,custo, valor_venda, valor_comissao_contador, valor_a_vista) values ('"+descricao+"','"+validade+"','"+custo+"','"+valor_venda+"','"+valor_comissao_contador+"','"+valor_a_vista+"')");
+		boolean resultado = statement.execute("insert into certificado (descricao,validade,custo, valor_venda, valor_comissao_contador, valor_a_vista, idMidia) values ('"+descricao+"','"+validade+"','"+custo+"','"+valor_venda+"','"+valor_comissao_contador+"','"+valor_a_vista+"','"+idMidia+"')");
 		System.out.println("Teve algum erro? "+resultado);
 		statement.close();
 		connection.close();
@@ -119,6 +119,7 @@ public class MySql {
 			c.setPreco_prazo(resultSet.getDouble("valor_venda"));
 			c.setComissao(resultSet.getDouble("valor_comissao_contador"));
 			c.setPreco_vista(resultSet.getDouble("valor_a_vista"));
+			c.setIdMidia(resultSet.getInt("idMidia"));
 			
 			
 		} 
@@ -136,10 +137,11 @@ public class MySql {
 		double precoPrazo = certificadoEditar.getPreco_prazo();
 		double precoVista = certificadoEditar.getPreco_vista();
 		double comissao = certificadoEditar.getComissao();
+		int idMidia = certificadoEditar.getIdMidia();
 		
 		Connection connection = Database.getConnection();
 		Statement statement = connection.createStatement();
-		boolean resultado = statement.execute("UPDATE certificado SET descricao = '"+descricao+"', validade = '"+validade+"', custo = '"+custo+"', valor_venda= '"+precoPrazo+"', valor_comissao_contador = '"+comissao+"', valor_a_vista = '"+precoVista+"' WHERE id = '"+id+"'");
+		boolean resultado = statement.execute("UPDATE certificado SET descricao = '"+descricao+"', validade = '"+validade+"', custo = '"+custo+"', valor_venda= '"+precoPrazo+"', valor_comissao_contador = '"+comissao+"', valor_a_vista = '"+precoVista+"', idMidia = '"+idMidia+"' WHERE id = '"+id+"'");
 	
 		System.out.println("Teve algum erro? "+resultado);
 		statement.close();
