@@ -5,7 +5,7 @@ public class Certificado {
 	private int id;
 	private String descricao;
 	private int validade;
-	private Midia midia;
+	private int idMidia;
 	private double custo;
 	private double comissao;
 	private double preco_vista;
@@ -28,11 +28,11 @@ public class Certificado {
 	public void setValidade(int validade) {
 		this.validade = validade;
 	}
-	public Midia getMidia() {
-		return midia;
+	public int getIdMidia() {
+		return idMidia;
 	}
-	public void setMidia(Midia midia) {
-		this.midia = midia;
+	public void setIdMidia(int idMidia) {
+		this.idMidia = idMidia;
 	}
 	public double getCusto() {
 		return custo;

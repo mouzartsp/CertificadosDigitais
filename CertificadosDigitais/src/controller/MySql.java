@@ -119,6 +119,7 @@ public class MySql {
 			c.setPreco_prazo(resultSet.getDouble("valor_venda"));
 			c.setComissao(resultSet.getDouble("valor_comissao_contador"));
 			c.setPreco_vista(resultSet.getDouble("valor_a_vista"));
+			c.setIdMidia(resultSet.getInt("idMidia"));
 			
 			
 		} 
@@ -136,10 +137,11 @@ public class MySql {
 		double precoPrazo = certificadoEditar.getPreco_prazo();
 		double precoVista = certificadoEditar.getPreco_vista();
 		double comissao = certificadoEditar.getComissao();
+		int idMidia = certificadoEditar.getIdMidia();
 		
 		Connection connection = Database.getConnection();
 		Statement statement = connection.createStatement();
-		boolean resultado = statement.execute("UPDATE certificado SET descricao = '"+descricao+"', validade = '"+validade+"', custo = '"+custo+"', valor_venda= '"+precoPrazo+"', valor_comissao_contador = '"+comissao+"', valor_a_vista = '"+precoVista+"' WHERE id = '"+id+"'");
+		boolean resultado = statement.execute("UPDATE certificado SET descricao = '"+descricao+"', validade = '"+validade+"', custo = '"+custo+"', valor_venda= '"+precoPrazo+"', valor_comissao_contador = '"+comissao+"', valor_a_vista = '"+precoVista+"', idMidia = '"+idMidia+"' WHERE id = '"+id+"'");
 	
 		System.out.println("Teve algum erro? "+resultado);
 		statement.close();
